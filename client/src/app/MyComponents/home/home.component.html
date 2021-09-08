@@ -1,14 +1,43 @@
 <div class="container mt-5">
-    <div class="text-center" *ngIf="!registerMode">
-       <h1> Welcome to our Home Page</h1>   
-       <button class="btn btn-primary btn-lg" (click)="registerToggle()">Register</button>
+  <div *ngIf="!(accountService.currentUser$ | async)">
+    <div class="text-center" *ngIf="!(registerMode || loginMode)">
+      <h1>Welcome to our Home Page</h1>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="registerToggle()"
+        class="mx-1"
+      >
+        Register
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="loginToggle()"
+        class="mx-1"
+      >
+        Login
+      </button>
     </div>
 
     <div class="container" *ngIf="registerMode">
-        <div class="row justify-content-center">
-            <div class="col-4">
-                <app-register [usersFromHomeComponent]="users" (cancelRegister)="cancelRegisterMode($event)"></app-register>
-            </div>
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <app-register
+            [usersFromHomeComponent]="users"
+            (cancelRegister)="cancelRegisterMode($event)"
+            (moveToLogin)="showLogin($event)"
+          ></app-register>
         </div>
+      </div>
     </div>
+
+    <div class="container" *ngIf="loginMode">
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <app-login (cancelLoginForm)="cancelLoginMode($event)"></app-login>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
